@@ -44,7 +44,9 @@ The server listens on `127.0.0.1`, choosing an available port starting at 9080. 
 
 Only one Office service may own a workspace at a time. The plugin manifest also includes a stdio entry point; do not enable it alongside the HTTP development connector for the same workspace. Formal marketplace installation, automatic runtime configuration and complete in-host review remain under validation.
 
-The repository currently contains eight product/workflow Skills under `skills/`. Consolidating these into one user-facing `univer-office` Skill is planned; this source publication does not claim that consolidation is complete.
+The plugin exposes one user-facing Skill, `univer-office`, and one MCP service. Product and cross-Unit guidance lives in seven ordinary Markdown files under `skills/univer-office/references/`, loaded only as needed. A standalone Skill ZIP is available through `python3 scripts/package-workbuddy-skills.py`; it contains instructions, not the Office runtime.
+
+If you previously imported the eight separate development Skills, updating the plugin does not automatically remove those independent user installations. After installing the unified Skill, remove only the old Univer Skills through WorkBuddy's installed-Skills manager; do not remove the Office connector or user Office files.
 
 ## Checks and local packaging
 
@@ -65,6 +67,7 @@ This builds each runtime target sequentially and creates a development archive u
 
 - [Product and technical specification](docs/workbuddy-univer-office-spec.md)
 - [Release readiness](docs/release-readiness.md)
+- [Official marketplace submission status](docs/marketplace-submission.md)
 - [SDK compatibility and known integration gaps](docs/sdk-compatibility.md)
 - [Viewer UI](docs/viewer-ui.md)
 - [Chronological validation notes](docs/workbuddy-univer-office-validation.md)

@@ -1,9 +1,4 @@
----
-name: univer-cross-unit-formula
-description: Create or diagnose formulas referencing another Unit in WorkBuddy Univer Office, with explicit source and revision checks.
----
-
-Read [the shared Univer workflow](../univer/SKILL.md) for file resolution, editable worktrees, confirmed writes and human review. Use the available workbuddy-univer-office MCP tools.
+# Cross Unit Formula
 
 Resolve source and destination Unit IDs and their draft or trunk context first. Discover cross-Unit formula syntax and calculation/resource requirements through `univer_api`; do not guess a reference from a display name or apply ordinary worksheet syntax to another Unit.
 

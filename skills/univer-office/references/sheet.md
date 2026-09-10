@@ -1,9 +1,4 @@
----
-name: univer-sheet
-description: Create and edit spreadsheets, formulas, charts, validation and pivot tables in WorkBuddy Univer Office; import or export XLSX/CSV/TSV.
----
-
-Read [the shared Univer workflow](../univer/SKILL.md) for file resolution, editable worktrees, confirmed writes and human review. Use the available workbuddy-univer-office MCP tools.
+# Sheet
 
 Use the `workbook` binding; select a worksheet explicitly. Discover installed methods with `univer_api` before constructing formulas, chart builders or pivot fields. Preserve existing styles and formulas outside the requested range.
 

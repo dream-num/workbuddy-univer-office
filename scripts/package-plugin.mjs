@@ -14,6 +14,7 @@ assert.match(manifest.name,/^[a-z0-9-]+$/);assert.match(manifest.version,/^[0-9]
 const files=[];
 async function collect(path){
  assert.ok(!path.startsWith('/')&&!path.split('/').includes('..')&&!/[\r\n]/.test(path));
+ assert.ok(!path.split('/').some(part=>part.startsWith('._')||part==='.DS_Store'),`macOS metadata is not a package resource: ${path}`);
  assert.ok(!/(^|\/)(\.data|node_modules|\.git|tests|test-host)(\/|$)|\.univer$|\.log$|(^|\/)\.env(?:\.|$)/.test(path),`Private or test file: ${path}`);
  const stat=await lstat(path);assert.ok(!stat.isSymbolicLink(),`Symlink not permitted: ${path}`);
  if(stat.isDirectory()){for(const entry of await readdir(path))await collect(`${path.replace(/\/$/,'')}/${entry}`);}
@@ -21,13 +22,12 @@ async function collect(path){
 }
 for(const path of new Set(['package.json',...manifest.files]))await collect(path);
 files.sort();
-for(const skill of ['univer','univer-sheet','univer-doc','univer-slide','univer-base','univer-board','univer-embed','univer-cross-unit-formula']){
- const path=`skills/${skill}/SKILL.md`;
- assert.ok(files.includes(path),`Missing product skill: ${path}`);
-}
-for(const required of ['.workbuddy-plugin/plugin.json','skills/univer/SKILL.md','dist/mcp/main.js','dist/mcp/http.js','dist/server/main.js','dist/viewer/index.html','dist/viewer/snapshot.html','dist/render-page/index.html','dist/mcp-app/app.js','dist/mcp-app/index.html','config/registry.npmrc','pnpm-lock.yaml'])assert.ok(files.includes(required),`Missing release entry: ${required}`);
+assert.deepEqual(files.filter(path=>path.endsWith('/SKILL.md')),['skills/univer-office/SKILL.md'],'The plugin must expose exactly one Skill');
+for(const reference of ['sheet','doc','slide','base','board','embed','cross-unit-formula'])assert.ok(files.includes(`skills/univer-office/references/${reference}.md`),`Missing reference: ${reference}`);
+for(const required of ['.workbuddy-plugin/plugin.json','skills/univer-office/SKILL.md','assets/univer-office.png','dist/mcp/main.js','dist/mcp/http.js','dist/server/main.js','dist/viewer/index.html','dist/viewer/snapshot.html','dist/render-page/index.html','dist/mcp-app/app.js','dist/mcp-app/index.html','config/registry.npmrc','pnpm-lock.yaml'])assert.ok(files.includes(required),`Missing release entry: ${required}`);
 const filename=`${manifest.name}-${manifest.version}.tgz`,archive=resolve(destination,filename),temporary=`${archive}.${randomUUID()}.tmp`;
-await run('tar',['-czf',temporary,'--',...files],{maxBuffer:8*1024*1024});
+// BSD tar otherwise adds AppleDouble entries that its own listing can hide.
+await run('tar',['-czf',temporary,'--',...files],{env:{...process.env,COPYFILE_DISABLE:'1'},maxBuffer:8*1024*1024});
 const archived=(await run('tar',['-tzf',temporary],{maxBuffer:8*1024*1024})).stdout.trim().split('\n').sort();
 assert.deepEqual(archived,files,'Archive entries differ from the audited file list');
 await rename(temporary,archive);

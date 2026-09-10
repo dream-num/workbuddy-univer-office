@@ -39,6 +39,10 @@ pnpm install --prod --frozen-lockfile
 
 依赖安装完成后可使用上文 HTTP 开发接入命令。运行时托管、自动启动与凭据配置、市场安装以及其他操作系统仍需验收；包中不包含 Pro license。
 
-应用源码采用 [Apache-2.0](LICENSE) 许可；SDK 等依赖保留各自许可要求，不随本仓库授予 Pro 许可或商标权。当前仍包含八个 Skill，统一为单个 `univer-office` 入口尚未实施。
+应用源码采用 [Apache-2.0](LICENSE) 许可；SDK 等依赖保留各自许可要求，不随本仓库授予 Pro 许可或商标权。插件现在只包含一个 `univer-office` 技能入口和一个 MCP 服务，七份专项说明作为 `references/` 中的普通 Markdown 按需读取。
+
+`python3 scripts/package-workbuddy-skills.py` 生成单技能导入 ZIP；它只包含使用说明，不能代替完整 Office 运行包。此前独立导入的八个旧技能不会因插件更新自动消失：安装新版后，在 WorkBuddy 已安装技能中移除旧的 Univer 技能即可，保留 MCP 连接器和用户 Office 文件。
 
 验证文档引用的 `.data/` 产物与 `docs/screenshots/` 截图保留在开发机器，不包含在公开仓库中。
+
+官方连接器上架尚未提交；已准备的信息、验证结果与剩余接入事项见[上架说明](docs/marketplace-submission.md)。

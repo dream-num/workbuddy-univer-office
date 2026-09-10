@@ -1,9 +1,4 @@
----
-name: univer-board
-description: Create and edit Board canvases, positioned elements and diagrams in WorkBuddy Univer Office.
----
-
-Read [the shared Univer workflow](../univer/SKILL.md) for file resolution, editable worktrees, confirmed writes and human review. Use the available workbuddy-univer-office MCP tools.
+# Board
 
 Use the `board` binding. Discover public element, text, connector and layout APIs using `univer_api`; inspect existing element IDs and geometry before editing. Retain editable canvas objects where supported instead of replacing an existing board with a screenshot.
 

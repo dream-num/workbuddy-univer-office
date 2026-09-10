@@ -1,7 +1,7 @@
 {
   "name": "workbuddy-univer-office",
   "version": "0.1.0",
-  "description": "Local Office editing and draft review built directly on Univer Office SDK. Development preview.",
+  "description": "Univer Office: local spreadsheets, documents, slides, Base and Board with one skill and one MCP service. Development preview.",
   "skills": "./skills/",
   "mcpServers": {
     "univer-office": {

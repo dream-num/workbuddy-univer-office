@@ -1,9 +1,4 @@
----
-name: univer-doc
-description: Create, edit and export rich text documents and tables in WorkBuddy Univer Office, including DOCX delivery.
----
-
-Read [the shared Univer workflow](../univer/SKILL.md) for file resolution, editable worktrees, confirmed writes and human review. Use the available workbuddy-univer-office MCP tools.
+# Doc
 
 Use the `doc` binding and discover the installed public paragraph, text, table and page methods with `univer_api`. Preserve document structure when replacing text; do not rebuild an imported document just to change a paragraph.
 

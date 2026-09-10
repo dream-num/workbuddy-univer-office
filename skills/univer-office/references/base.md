@@ -1,9 +1,4 @@
----
-name: univer-base
-description: Create and edit structured Base tables, records and views in WorkBuddy Univer Office; export selected tables or views.
----
-
-Read [the shared Univer workflow](../univer/SKILL.md) for file resolution, editable worktrees, confirmed writes and human review. Use the available workbuddy-univer-office MCP tools.
+# Base
 
 Use the `base` binding. Discover fields, records, tables and views through `univer_api`; resolve IDs from existing content rather than display order. Preserve field types and record identities during updates.
 
