@@ -1,0 +1,210 @@
+@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@source "./*.ts";
+@source "./*.html";
+
+@theme inline {
+  --color-office-surface: var(--surface);
+  --color-office-text: var(--text);
+  --color-office-muted: var(--muted);
+  --color-office-line: var(--line);
+  --color-office-hover: var(--hover);
+  --color-office-selected: var(--selected);
+  --color-office-accent: var(--green);
+}
+
+/* Host-shell styles only. No Preflight or selectors that restyle the Office SDK workbench. */
+:root {
+  font-family: Inter, "PingFang SC", "Microsoft Yahei", sans-serif;
+  font-synthesis: none;
+  --surface: var(--color-white); --text: var(--color-slate-800);
+  --muted: var(--color-slate-500); --line: var(--color-slate-200);
+  --hover: var(--color-slate-100); --selected: var(--color-emerald-50);
+  --green: var(--color-emerald-700);
+  @apply bg-slate-50 text-office-text antialiased;
+}
+body { @apply m-0; }
+body.dark {
+  --surface: var(--color-slate-900); --text: var(--color-slate-100);
+  --muted: var(--color-slate-400); --line: var(--color-slate-700);
+  --hover: var(--color-slate-800); --selected: var(--color-emerald-950);
+  --green: var(--color-emerald-500);
+  @apply bg-slate-950 text-office-text;
+  color-scheme: dark;
+}
+:where(#office-sidebar, #shell > main > header, #review-bar, #empty, #comparison, .office-dialog) :is(button,input,select) { font-family: inherit; @apply box-border; }
+:where(#office-sidebar, #shell > main > header, #review-bar, #empty, #comparison, .office-dialog) button {
+  @apply inline-flex h-8 shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md border border-office-line bg-office-surface px-3 py-0 text-xs font-medium leading-5 text-office-text transition-colors;
+}
+:where(#office-sidebar, #shell > main > header, #review-bar, #empty, #comparison, .office-dialog) button:hover { @apply bg-office-hover; }
+:where(#office-sidebar, #shell > main > header, #review-bar, #empty, #comparison, .office-dialog) button:disabled { @apply cursor-default opacity-50; }
+:where(#office-sidebar, #shell > main > header, #review-bar, #empty, #comparison, .office-dialog) button.primary { @apply border-emerald-700 bg-emerald-700 text-white hover:bg-emerald-800; }
+:where(#office-sidebar, #shell > main > header, #review-bar, #empty, #comparison, .office-dialog) button.danger { @apply border-transparent bg-transparent text-red-600 hover:bg-red-50; }
+body.dark :where(#review-bar,.office-dialog) button.danger { @apply text-red-400 hover:bg-red-950; }
+:where(#office-sidebar, #shell > main > header, #review-bar, #empty, #comparison, .office-dialog) :is(button,input,select,summary):focus-visible { @apply outline-2 outline-offset-2 outline-office-accent; }
+:where(#office-sidebar,#comparison,.office-dialog) :is(input,select) { @apply h-8 min-w-0 rounded-md border border-office-line bg-office-surface px-2 text-xs text-office-text; }
+
+#shell { @apply grid h-dvh grid-cols-[208px_minmax(0,1fr)] overflow-hidden; }
+#office-sidebar { @apply box-border flex min-h-0 flex-col overflow-y-auto border-r border-office-line bg-office-surface px-3 pt-5 pb-4; }
+#office-sidebar a { @apply text-inherit no-underline; }
+.brand { @apply mx-1 mb-7 flex shrink-0 items-center gap-3 text-base font-semibold; }
+.brand small { @apply mt-1 block text-[11px] font-normal text-office-muted; }
+.brand-mark { @apply block size-9 shrink-0 object-contain; }
+.office-logo { @apply object-contain; }
+body.dark .office-logo { @apply invert; }
+.section-label { @apply mt-4 mb-2 flex items-center justify-between px-2 text-[11px] text-office-muted; }
+.file-switcher { @apply mb-3 flex min-w-0 items-center gap-1; }
+#files { @apply block w-full flex-1 truncate; }
+#units, #worktrees { @apply grid min-w-0 gap-1; }
+#units { @apply mb-3; }
+#units button, #worktrees button { @apply min-h-9 w-full justify-start overflow-hidden border-0 bg-transparent px-2 text-left font-normal; }
+#units button { @apply h-9; }
+#worktrees button { @apply h-auto py-2; }
+#units button.selected, #worktrees button.selected { @apply bg-office-selected text-office-accent; }
+#units .unit-title, #worktrees .worktree-title { @apply block min-w-0 flex-1 truncate; }
+.worktree-state { @apply shrink-0 rounded px-1 py-0.5 text-[10px] leading-4 text-office-muted; }
+.worktree-state[data-state=ready] { @apply bg-office-selected text-office-accent; }
+.product-icon, #units .unit-kind { @apply m-0 inline-flex size-[18px] shrink-0 items-center justify-center align-middle; }
+.product-icon svg { @apply block size-full; }
+#worktree-navigation { @apply mb-4 border-t border-office-line; }
+.worktree-contents { @apply mt-1 ml-2 border-l border-office-line pl-2; }
+.worktree-contents button { @apply my-0.5; }
+.worktrees-empty { @apply mx-2 mt-1 mb-2 text-xs text-office-muted; }
+.merged-worktrees summary { @apply cursor-pointer rounded-md px-2 py-2 text-xs text-office-muted; }
+.merged-worktree { @apply mt-1 mb-3 ml-2 border-l border-office-line pl-2; }
+.merged-worktree-name { @apply mt-2 mb-1 px-2 text-[11px] font-medium text-office-muted wrap-anywhere; }
+.aside-bottom { @apply mt-auto border-t border-office-line px-2 pt-4 text-[11px] text-office-muted; }
+.aside-bottom small { @apply mt-2 block text-[10px]; }
+.local-dot { @apply mr-1.5 inline-block size-1.5 shrink-0 rounded-full bg-emerald-500; }
+
+#shell > main { @apply grid min-h-0 min-w-0 grid-rows-[auto_auto_minmax(0,1fr)_24px]; container-type: inline-size; }
+#shell > main > header { --header-inset: 20px; @apply relative box-border flex min-h-16 items-center justify-between gap-5 border-b border-office-line bg-office-surface px-5 py-2.5; }
+.header-leading { @apply flex min-w-0 items-center gap-2; max-width: calc(50% - 80px); }
+.document-heading { @apply min-w-0; }
+.breadcrumb { @apply flex min-w-0 text-[10px] text-office-muted; }
+#file-name { @apply truncate; }
+#shell > main > header h1 { @apply mt-1 mb-0 truncate text-base font-semibold leading-6; }
+.header-actions, #view-actions { @apply flex shrink-0 items-center gap-1.5; }
+#shell .toolbar-icon { @apply inline-flex size-8 shrink-0 items-center justify-center rounded-md border border-transparent bg-transparent p-0 text-office-muted hover:bg-office-hover hover:text-office-text; }
+#shell .toolbar-icon svg { @apply size-4; }
+#close-file-sidebar { display: none !important; }
+#view-mode:not([hidden]) { @apply absolute left-1/2 flex -translate-x-1/2 gap-0.5 rounded-md bg-office-hover; }
+#view-mode button { @apply min-w-16 border-transparent bg-transparent px-3 text-office-muted; }
+#view-mode button[aria-pressed=true] { @apply bg-office-surface font-semibold text-office-text shadow-sm; }
+#review-bar { @apply box-border flex min-h-12 flex-wrap items-center justify-between gap-2 border-b border-office-line bg-office-surface px-5 py-2 text-xs; }
+.review-copy { @apply flex min-w-0 flex-wrap items-center gap-2; }
+.review-copy .local-dot { @apply m-0; }
+#state { @apply font-semibold; }
+#review-description { @apply text-office-muted; }
+#actions { @apply ml-auto flex flex-wrap gap-2; }
+#workspace { @apply relative min-h-0 overflow-hidden bg-office-surface; }
+#editor { @apply hidden size-full; }
+#shell > main > footer { @apply flex items-center justify-between gap-3 overflow-hidden border-t border-office-line bg-office-surface px-4 text-[10px] text-office-muted; }
+#connection { @apply min-w-0 truncate; }
+#loading { @apply absolute inset-0 z-50 place-items-center bg-office-surface/90 text-sm text-office-muted; }
+#loading:not([hidden]) { @apply grid; }
+#empty, #removed-content:not([hidden]) { @apply box-border flex h-full flex-col items-center justify-center px-6 py-8 text-center; }
+.empty-icon { @apply mb-4 grid size-16 place-items-center rounded-2xl bg-office-selected text-4xl text-office-accent; }
+:is(#empty,#removed-content,#unavailable-content) h2 { @apply my-3 text-xl font-semibold; }
+:is(#empty,#removed-content,#unavailable-content) p { @apply mt-0 mb-5 max-w-lg text-sm leading-7 text-office-muted; }
+.format-list { @apply mt-6 flex gap-5 text-xs text-office-muted; }
+#unavailable-content { @apply p-8 text-office-text; }
+#toast { @apply fixed right-3 bottom-10 z-[10000] box-border max-w-[min(500px,calc(100vw-24px))] rounded-lg bg-slate-900 px-4 py-3 text-sm leading-6 text-white shadow-lg wrap-anywhere; }
+
+.office-dialog { @apply box-border w-[min(420px,calc(100vw-24px))] max-h-[calc(100dvh-40px)] overflow-auto rounded-xl border border-office-line bg-office-surface p-6 text-office-text shadow-xl; }
+.office-dialog::backdrop { @apply bg-slate-950/30 backdrop-blur-xs; }
+.office-dialog h2 { @apply mt-0 mb-4 text-lg font-semibold leading-7; }
+.office-dialog p { @apply my-3 text-sm leading-6 text-office-muted; }
+.office-dialog label { @apply my-4 grid gap-2 text-xs text-office-muted; }
+.office-dialog :is(input,select) { @apply w-full; }
+.office-dialog [data-error] { @apply text-red-600; }
+body.dark .office-dialog [data-error] { @apply text-red-400; }
+.dialog-actions { @apply mt-6 flex flex-wrap justify-end gap-2; }
+#delivery-dialog { @apply w-[min(480px,calc(100vw-24px))]; }
+#delivery-dialog fieldset { @apply my-4 rounded-lg border border-office-line px-3 py-0; }
+#delivery-dialog legend { @apply px-1 text-xs text-office-muted; }
+#delivery-result:not([hidden]) { @apply block whitespace-pre-wrap rounded-lg border border-office-line p-3 text-xs leading-6 wrap-anywhere; }
+#restore-dialog { @apply w-[min(520px,calc(100vw-24px))]; }
+#removed-dialog { @apply w-[min(620px,calc(100vw-24px))]; }
+.removed-unit-row { @apply flex items-center justify-between gap-3 border-b border-office-line py-3 text-sm; }
+.removed-unit-row span { @apply min-w-0 wrap-anywhere; }
+#merge-results:not([hidden]) { @apply flex items-center gap-2 text-xs text-amber-700; }
+body.dark #merge-results { @apply text-amber-300; }
+.merge-issues-dialog li { @apply my-2 text-sm leading-6 wrap-anywhere; }
+
+.comparison { @apply grid h-full grid-cols-[268px_minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)] overflow-hidden; }
+.comparison[hidden] { @apply hidden; }
+.comparison-toolbar { @apply col-span-full row-start-1 flex min-w-0 flex-wrap items-center gap-2 border-b border-office-line bg-office-surface px-3 py-1.5 text-xs; }
+.comparison-toolbar label { @apply flex min-w-0 items-center gap-2; }
+.comparison-toolbar select { @apply max-w-52; }
+.comparison-source-controls { @apply flex min-w-0 flex-1 items-center gap-2; }
+.comparison-display-controls { @apply flex min-w-0 items-center gap-2; }
+.comparison-freshness { @apply ml-auto whitespace-nowrap text-office-muted; }
+.comparison-freshness.has-update { @apply text-office-accent; }
+.comparison-modes { @apply box-border flex h-8 shrink-0 overflow-hidden rounded-md border border-office-line; }
+#comparison .comparison-modes button { @apply h-[30px] rounded-none border-0 px-3; }
+#comparison .comparison-modes button[aria-pressed=true], #comparison .comparison-formulas[aria-pressed=true] { @apply bg-office-text text-office-surface; }
+.comparison-editors { @apply col-start-2 row-start-2 grid min-h-0 min-w-0 grid-cols-2; }
+.comparison-editors section { @apply grid min-h-0 min-w-0 grid-rows-[32px_minmax(0,1fr)] overflow-hidden border-r border-office-line; }
+.comparison-heading { @apply box-border flex items-center bg-office-hover px-3 text-[11px] text-office-muted; }
+.comparison-editor { @apply h-full min-h-0; }
+.comparison-changes { @apply col-start-1 row-start-2 box-border min-h-0 min-w-0 overflow-auto border-r border-office-line bg-office-surface p-3 text-xs; }
+.comparison-changes strong { @apply mb-3 block font-semibold; }
+.comparison-changes input { @apply w-full; }
+.comparison-legend { @apply my-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] leading-5; }
+.comparison-legend .insert { @apply text-emerald-700; }
+.comparison-legend .delete { @apply text-red-600; }
+.comparison-legend .update { @apply text-amber-700; }
+body.dark .comparison-legend .insert { @apply text-emerald-400; }
+body.dark .comparison-legend .delete { @apply text-red-400; }
+body.dark .comparison-legend .update { @apply text-amber-300; }
+.comparison-navigation { @apply my-2 text-[11px] leading-5 text-office-muted; }
+.comparison-tree summary { @apply cursor-pointer rounded-md py-2 text-xs font-medium wrap-anywhere; }
+#comparison .comparison-change { @apply my-1 flex h-auto w-full flex-col items-start justify-start gap-1 whitespace-normal rounded-l-none rounded-r-md border-0 border-l-[3px] border-amber-400 bg-transparent px-2 py-2 text-left text-xs font-normal leading-5 wrap-anywhere; }
+#comparison .comparison-change.insert { @apply border-emerald-500; }
+#comparison .comparison-change.delete { @apply border-red-400; }
+#comparison .comparison-change:hover { @apply bg-office-hover; }
+#comparison .comparison-change.selected { @apply bg-office-selected; }
+.comparison-change small { @apply min-w-0 text-[11px] leading-4 text-office-muted; }
+#office-tooltip { @apply pointer-events-none fixed z-[10001] box-border max-w-64 rounded-md bg-slate-900 px-2.5 py-1.5 text-xs font-medium leading-5 text-white shadow-lg; }
+#office-tooltip[hidden] { @apply hidden; }
+body.dark #office-tooltip { @apply bg-slate-100 text-slate-900; }
+#sidebar-backdrop:not([hidden]) { @apply fixed inset-0 z-[1000] bg-slate-950/30; }
+
+body.review-nav-hidden #shell, body.embedded-preview #shell { @apply grid-cols-[minmax(0,1fr)]; }
+body.review-nav-hidden #office-sidebar, body.embedded-preview #office-sidebar { @apply hidden; }
+body.embedded-preview :is(.breadcrumb,#review-description,#toggle-sidebar) { @apply hidden; }
+body.embedded-preview #shell > main > header { @apply min-h-13 px-4; }
+@container (max-width: 1100px) {
+  #shell > main > header:has(#view-mode:not([hidden])) { @apply pb-12; }
+  #view-mode:not([hidden]) { @apply right-3 bottom-2 left-3 translate-x-0; }
+  #view-mode button { @apply min-w-0 flex-1; }
+  .comparison:not([hidden]) { @apply grid-cols-[minmax(0,1fr)]; }
+  .comparison-editors { @apply col-start-1 grid-cols-[minmax(0,1fr)] grid-rows-2; }
+  .comparison-editors section { @apply border-r-0 border-b; }
+  .comparison-changes { @apply hidden; }
+  .comparison-toolbar { @apply gap-1.5 px-2; }
+  .comparison-source-controls { @apply w-full flex-auto; }
+  .comparison-source-controls label { @apply min-w-0 flex-1; }
+  .comparison-source-controls select { @apply max-w-none flex-1; }
+  .comparison-freshness { @apply ml-0 text-[11px]; }
+  .comparison-display-controls { @apply w-full; }
+  .comparison-display-controls > select { @apply min-w-0 max-w-none flex-1; }
+}
+@media (max-width: 1100px) {
+  #shell { @apply grid-cols-[minmax(0,1fr)]; }
+  #office-sidebar { @apply fixed inset-y-0 left-0 z-[1001] w-[min(280px,85vw)] shadow-xl; }
+  #shell #close-file-sidebar { display: inline-flex !important; @apply mb-4 self-end; }
+  #shell > main > header { @apply grid grid-cols-[minmax(0,1fr)_auto] gap-2 px-3; }
+  .header-leading { @apply max-w-full; }
+  .header-actions, #view-actions { @apply flex-wrap; }
+  #review-bar { @apply px-3; }
+  #actions { @apply ml-0; }
+}
+@media (max-width: 600px) {
+  #review-description, #shell > main > footer span:last-child { @apply hidden; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :where(#office-sidebar,#shell > main > header,#review-bar,#comparison,.office-dialog) button { @apply transition-none; }
+}

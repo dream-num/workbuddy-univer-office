@@ -1,0 +1,136 @@
+{
+  "checkedAt": "2026-09-09",
+  "registry": "https://insider-npm-registry.univer.work/",
+  "method": "Read package metadata and check exact version in versions map",
+  "verificationScope": "Metadata existence only; no installation, tarball or runtime verification",
+  "candidateSdkVersion": "1.0.0-insiders.20260907-70fc579",
+  "packages": [
+    {
+      "name": "@univer-cli/headless-univer",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univer-cli/univer-collaboration-runtime",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univer-cli/content-execution",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univer-cli/content-inspection",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univer-cli/api-reference",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univer-cli/svg-facade",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univer-cli/resource-library",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univer-cli/unit-screenshot",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univer-cli/unit-pdf-printer",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univer-cli/unit-layout-lint",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univer-cli/univer-render-runtime",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univer-cli/univer-render-page",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/collaboration-service",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/collaboration-endpoint",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/collaboration-transport-node",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/collaboration-database-sqlite",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/collaboration-worktree-service",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/collaboration-worktree-endpoint",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/collaboration-worktree-client",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/collaboration-worktree-database-sqlite",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/collaboration-history-service",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/collaboration-history-endpoint",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/collaboration-history-database-sqlite",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/edit-history",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {}
+    },
+    {
+      "name": "@univerjs-pro/exchange-node",
+      "version": "1.0.0-insiders.20260907-70fc579",
+      "nativeDependencies": {
+        "@univerjs-pro/exchange-node-binding": "0.1.1"
+      }
+    }
+  ]
+}

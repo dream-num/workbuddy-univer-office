@@ -1,0 +1,13 @@
+{
+  "name": "workbuddy-univer-office",
+  "version": "0.1.0",
+  "description": "Local Office editing and draft review built directly on Univer Office SDK. Development preview.",
+  "skills": "./skills/",
+  "mcpServers": {
+    "univer-office": {
+      "command": "node",
+      "args": ["${CODEBUDDY_PLUGIN_ROOT}/dist/mcp/main.js"],
+      "env": { "WORKBUDDY_OFFICE_WORKSPACE": "${CODEBUDDY_PROJECT_DIR}" }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+/* Constrain the public thumbnail UI inside narrow Office containers. */
+#editor, #snapshot { container-type: inline-size; }
+@container (max-width: 600px) {
+  aside:has([data-u-comp="slide-thumbnail-item"]) { max-width: 96px; }
+}

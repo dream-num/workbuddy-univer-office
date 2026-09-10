@@ -1,0 +1,70 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join,resolve} from 'node:path';
+import {Client} from '@modelcontextprotocol/sdk/client/index.js';
+import {StdioClientTransport} from '@modelcontextprotocol/sdk/client/stdio.js';
+const workspace=await mkdtemp(join(tmpdir(),'workbuddy-mcp-test-'));
+const transport=new StdioClientTransport({command:process.execPath,args:[resolve('dist/mcp/main.js')],env:{...process.env,WORKBUDDY_OFFICE_WORKSPACE:workspace},stderr:'pipe'});
+const client=new Client({name:'office-test',version:'1.0.0'});
+try{
+ await client.connect(transport);
+ await test('MCP discovers real tools and API docs',async()=>{
+  const {tools}=await client.listTools();assert.equal(tools.length,15);assert.ok(tools.some(t=>t.name==='univer_screenshot'));
+  assert.match(tools.find(t=>t.name==='univer_preview')._meta.ui.resourceUri,/^ui:\/\/workbuddy-univer-office\/preview\/[a-f0-9]{16}$/);
+  assert.equal(tools.find(t=>t.name==='univer_preview')._meta.workbuddy.ui.launchSurface,'panel');
+  const result=await client.callTool({name:'univer_api',arguments:{action:'find',queries:['setValues'],unit:'sheet',limit:3}});assert.ok(!result.isError);assert.match(result.content[0].text,/setValues/);
+  const registries=await client.callTool({name:'univer_resources',arguments:{action:'list'}});assert.equal(registries.structuredContent.result.length,6);
+ });
+ await test('MCP roundtrip creates file and reports durable empty directory',async()=>{
+  const created=await client.callTool({name:'univer_new',arguments:{file:'mcp-created.univer'}});assert.ok(!created.isError,JSON.stringify(created));
+  const fileId=created.structuredContent.result.fileId;
+  const status=await client.callTool({name:'univer_status',arguments:{fileId}});assert.equal(status.structuredContent.result.fileId,fileId);assert.deepEqual(status.structuredContent.result.units,[]);
+ });
+ await test('MCP App shell is bundled; launch and live preview capabilities stay outside model-visible content',async()=>{
+  const uri=(await client.listTools()).tools.find(t=>t.name==='univer_preview')._meta.ui.resourceUri;
+  const resource=await client.readResource({uri});
+  assert.equal(resource.contents[0].mimeType,'text/html;profile=mcp-app');
+  assert.match(resource.contents[0].text,/<script>/);assert.ok(!resource.contents[0].text.includes('<!-- APP_SCRIPT -->'));
+  // Hosts receive one self-contained resource; an external stylesheet would be blocked by its CSP.
+  const style=resource.contents[0].text.match(/<style>([\s\S]*?)<\/style>/)?.[1];
+  assert.ok(style?.length>0,'The card includes compiled styles');
+  assert.doesNotMatch(style,/@apply|@import/,'No build-time CSS directives reach the host');
+  const shell=resource.contents[0].text.replace(/<script>[\s\S]*?<\/script>/g,'');
+  assert.ok(!/<!-- APP_STYLE -->|<link\b[^>]*rel=["']stylesheet/.test(shell),'The HTML shell has no unresolved stylesheet dependency');
+  assert.deepEqual(resource.contents[0]._meta.ui.csp.resourceDomains,[]);
+  assert.ok(!resource.contents[0].text.includes('ticket='));assert.ok(!resource.contents[0].text.includes('esm.sh'));
+  const made=await client.callTool({name:'univer_new',arguments:{file:'preview.univer'}});
+  const fileId=made.structuredContent.result.fileId;
+  const worktree=await client.callTool({name:'univer_worktree',arguments:{fileId,action:'create'}});
+  const worktreeId=worktree.structuredContent.result.worktreeID;
+  const created=await client.callTool({name:'univer_unit',arguments:{fileId,worktreeId,kind:'sheet',name:'Preview target'}});
+  const target={fileId,worktreeId,unitId:created.structuredContent.result.unitId,branch:'worktree'};
+  const preview=await client.callTool({name:'univer_preview',arguments:{target,capture:false}});
+  assert.ok(!preview.isError,JSON.stringify(preview));assert.deepEqual(preview.structuredContent.result.target,target);
+  assert.ok(!JSON.stringify(preview.content).includes('ticket='));assert.ok(!JSON.stringify(preview.structuredContent).includes('ticket='));
+  const embedded=new URL(preview._meta.office.previewUrl);assert.match(embedded.pathname,/^\/preview\/[a-f0-9]{64}\/$/);
+  assert.ok(!JSON.stringify(preview.content).includes(embedded.pathname));assert.ok(!JSON.stringify(preview.structuredContent).includes(embedded.pathname));
+  assert.deepEqual(resource.contents[0]._meta.ui.csp.frameDomains,[embedded.origin]);
+  const launch=new URL(preview._meta.office.launchUrl);assert.equal(launch.searchParams.get('unit'),target.unitId);
+  const opened=await fetch(launch,{redirect:'manual'});assert.equal(opened.status,303);assert.match(opened.headers.get('set-cookie'),/HttpOnly/);
+  const destination=new URL(opened.headers.get('location'),launch);assert.equal(destination.searchParams.get('worktree'),worktreeId);
+  launch.searchParams.set('unit','missing');const wrongTarget=await fetch(launch,{redirect:'manual'});assert.equal(wrongTarget.status,400);
+  const removed=await client.callTool({name:'univer_unit',arguments:{fileId,worktreeId,unitId:target.unitId,action:'remove'}});assert.ok(!removed.isError);assert.equal(removed.structuredContent.result.worktree.units[0].removed,true);
+  const restored=await client.callTool({name:'univer_unit',arguments:{fileId,worktreeId,unitId:target.unitId,action:'restore'}});assert.ok(!restored.isError);assert.equal(Boolean(restored.structuredContent.result.worktree.units[0].removed),false);
+  const ready=await client.callTool({name:'univer_worktree',arguments:{fileId,worktreeId,action:'ready'}});assert.ok(!ready.isError);
+  const frozen=await client.callTool({name:'univer_preview',arguments:{target,capture:false}});
+  assert.equal(frozen.structuredContent.result.state,'ready');
+  assert.equal(frozen.structuredContent.result.previewAccess,'read-only');
+  assert.equal(frozen.structuredContent.result.worktreeEditable,false);
+  assert.equal(frozen.structuredContent.result.awaitingHumanReview,true);
+  assert.equal(frozen.structuredContent.result.revision,null);
+  const denied=await client.callTool({name:'univer_execute',arguments:{target,mode:'write',code:'return true;'}});assert.equal(denied.isError,true);
+  const reopened=await client.callTool({name:'univer_worktree',arguments:{fileId,worktreeId,action:'reopen'}});assert.ok(!reopened.isError);
+  const editable=await client.callTool({name:'univer_preview',arguments:{target,capture:false}});
+  assert.equal(editable.structuredContent.result.worktreeEditable,true);
+  assert.equal(editable.structuredContent.result.awaitingHumanReview,false);
+  assert.equal(editable.structuredContent.result.previewAccess,'read-only');
+ });
+}finally{await client.close();await transport.close();}

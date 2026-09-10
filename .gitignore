@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.data/
+.workbuddy/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+*.univer
+*.unv
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+docs/screenshots/

@@ -1,0 +1,40 @@
+@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@source "./*.ts";
+@source "./*.html";
+:root { color-scheme:light dark; --bg:light-dark(var(--color-white),var(--color-slate-900)); --fg:light-dark(var(--color-slate-800),var(--color-slate-100)); --muted:light-dark(var(--color-slate-500),var(--color-slate-400)); --line:light-dark(var(--color-slate-200),var(--color-slate-700)); --hover:light-dark(var(--color-slate-100),var(--color-slate-800)); font-family:Inter,system-ui,sans-serif; }
+@theme inline { --color-card:var(--bg); --color-card-text:var(--fg); --color-card-muted:var(--muted); --color-card-line:var(--line); --color-card-hover:var(--hover); }
+body { @apply m-0 bg-card text-sm leading-6 text-card-text antialiased; }
+.card { @apply box-border min-w-0 p-3; }
+header { @apply flex min-w-0 items-center gap-2.5; }
+.heading { @apply min-w-0 flex-1; }
+h1 { @apply m-0 truncate text-sm font-semibold leading-6; }
+p { @apply m-0 text-xs leading-5 text-card-muted; }
+.mark { @apply grid size-8 shrink-0 place-items-center rounded-md bg-card-hover text-lg font-semibold text-emerald-700; }
+.mark.product-icon svg { @apply block size-5; }
+.office-logo { @apply block size-6 object-contain; }
+html[data-theme=dark] .office-logo { @apply invert; }
+@media(prefers-color-scheme:dark) { html:not([data-theme]) .office-logo { @apply invert; } }
+.state { @apply mt-3 rounded-md bg-card-hover px-3 py-2 text-xs; }
+.toolbar { @apply my-3 flex flex-wrap items-center gap-1.5; }
+button { font-family:inherit; @apply box-border inline-flex h-8 shrink-0 cursor-pointer items-center justify-center rounded-md border border-card-line bg-card px-3 py-0 text-xs font-medium text-card-text transition-colors; }
+button:hover { @apply bg-card-hover; }
+button:disabled { @apply cursor-default opacity-50; }
+button:focus-visible { @apply outline-2 outline-offset-2 outline-emerald-600; }
+button.primary { @apply mr-auto border-emerald-700 bg-emerald-700 text-white hover:bg-emerald-800; }
+button.toolbar-icon { @apply size-8 border-transparent bg-transparent p-0 text-card-muted hover:bg-card-hover hover:text-card-text; }
+button.toolbar-icon svg { @apply size-4; }
+#images { @apply flex min-h-32 items-start gap-3 overflow-auto rounded-lg border border-card-line p-2 text-xs text-card-muted; }
+#images img { @apply h-auto max-w-full shrink-0 object-contain; }
+#error { @apply my-2 whitespace-pre-wrap text-red-600; }
+html[data-theme=dark] #error { @apply text-red-400; }
+footer { @apply mt-3 text-[11px] leading-5 text-card-muted; }
+#live { @apply box-border block h-[620px] w-full rounded-lg border border-card-line; }
+html[data-mode=fullscreen] #live,html[data-mode=pip] #live { @apply h-[max(160px,calc(100dvh-164px))]; }
+html[data-mode=fullscreen] #images { @apply max-h-[calc(100dvh-164px)]; }
+#office-tooltip { @apply pointer-events-none fixed z-50 box-border max-w-56 rounded-md bg-slate-900 px-2.5 py-1.5 text-xs leading-5 text-white shadow-lg; }
+html[data-theme=dark] #office-tooltip { @apply bg-slate-100 text-slate-900; }
+[hidden] { display:none!important; }
+@media(max-width:360px) { .card { @apply p-2; } button.primary { @apply w-full; } }
+@media(prefers-reduced-motion:reduce) { button { @apply transition-none; } }
