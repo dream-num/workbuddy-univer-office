@@ -1,4 +1,4 @@
-"""Package the official local stdio MCP connector; runtime is a versioned release asset."""
+"""Package the local stdio MCP connector with a fixed public npm runtime URL."""
 from pathlib import Path
 from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 import hashlib
@@ -7,8 +7,7 @@ import re
 
 root = Path(__file__).resolve().parent.parent
 version = json.loads((root / 'package.json').read_text())['version']
-release = f'v{version}-preview.1'
-runtime_url = f'https://github.com/dream-num/workbuddy-univer-office/releases/download/{release}/workbuddy-univer-office-{version}.tgz'
+runtime_url = f'https://registry.npmjs.org/workbuddy-univer-office/-/workbuddy-univer-office-{version}.tgz'
 entries = {}
 def document(name, value):
     entries[name] = (json.dumps(value, ensure_ascii=False, indent=2) + '\n').encode()
@@ -54,7 +53,7 @@ Source: https://github.com/dream-num/workbuddy-univer-office
 
 This is a development-preview connector candidate, not an approval record.
 One stdio MCP server and one Skill; no cloud Office service. WorkBuddy prepares
-Node and npx obtains the versioned runtime from:
+Node and npx obtains the fixed-version runtime from the public npm registry:
 {runtime_url}
 
 On first connection, enter an absolute local directory authorized for Office
@@ -63,6 +62,7 @@ configuration; no API key or OAuth account is needed. This use of a directory
 field must be verified in the platform preview. The server rejects absent,
 unexpanded or relative paths. It never defaults to the user's home directory.
 
+The runtime download does not require GitHub access or an npm account.
 The runtime uses the public Univer insiders npm registry for its pinned SDK
 cohort and npm dependencies. Network access is required for initial download;
 Office data is stored locally. The host's own model data handling is separate.

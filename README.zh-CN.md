@@ -46,3 +46,5 @@ pnpm install --prod --frozen-lockfile
 验证文档引用的 `.data/` 产物与 `docs/screenshots/` 截图保留在开发机器，不包含在公开仓库中。
 
 官方连接器上架尚未提交；已准备的信息、验证结果与剩余接入事项见[上架说明](docs/marketplace-submission.md)。
+
+连接器使用一个本地 stdio MCP 和一个 Skill，运行包从 npm 的固定版本地址下载，不需要用户访问 GitHub 或登录 npm。SDK 依赖使用公开的 Univer registry。构建运行包后，依次执行 `node scripts/package-connector-runtime.mjs` 和 `python3 scripts/package-workbuddy-connector.py`；分发连接器 ZIP 前，必须先发布对应版本并验证下载。首次连接可能需要数分钟，后续启动复用 npm 缓存。
