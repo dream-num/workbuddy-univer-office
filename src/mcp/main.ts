@@ -9,7 +9,7 @@ if(!workspace || workspace.includes('${'))throw new Error('WORKBUDDY_OFFICE_WORK
 const runtime=await startServer({workspace:resolve(workspace)});
 const server=createOfficeMcpServer(runtime,resolve(workspace));
 // Human launch stays separate from the model's tool results until host UI authorization is verified.
-process.stderr.write(`Office review browser: ${runtime.launchUrl}\n`);
+process.stderr.write('Univer Office MCP ready. Open previews and human review through the host UI.\n');
 const transport=new StdioServerTransport();
 await server.connect(transport);
 let closing=false;

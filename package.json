@@ -130,6 +130,7 @@
     "vitest": "4.0.18"
   },
   "files": [
+    "bin/",
     "assets/",
     ".workbuddy-plugin/",
     "skills/",
@@ -147,5 +148,8 @@
     "LICENSE",
     "config/",
     "pnpm-lock.yaml"
-  ]
+  ],
+  "bin": {
+    "univer-office": "bin/univer-office.mjs"
+  }
 }

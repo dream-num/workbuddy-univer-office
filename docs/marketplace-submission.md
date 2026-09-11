@@ -2,6 +2,16 @@
 
 Status: **not submitted**. This is the submission brief for a single Univer Office connector, not an installable official connector package or an approval record.
 
+## 2026-09-11 connector candidate
+
+The selected submission route is a local **MCP + Skill connector**, not the expert or Buddy App routes. The earlier expert ZIP remains a manual-HTTP development package and is not the connector submission artifact.
+
+Implemented an npx executable with explicit absolute-directory validation, removed the human launch credential from stdio startup logs, and added the official connector ZIP generator. The connector uses a local directory form, managed Node >=22.12.0 <23, one stdio server and one Skill. The runtime builder packages a production npm shrinkwrap lock, without development dependencies. The configuration allows up to 15 minutes for a cold connection; this is not a measured startup guarantee.
+
+On a fresh npm cache without the user's npm configuration, the executable installed and reported its version. A subsequent protocol verification through npx created a Sheet, confirmed a draft write, read back SUM=2000, rendered PNG, exported XLSX, loaded the MCP App resource and received HTTP 200 from the preview page. This does not establish actual WorkBuddy panel discovery. Missing, relative and unexpanded workspace values are rejected before service startup. Type checking and three targeted MCP integration tests passed.
+
+The official platform accepted the initial connector ZIP and reached the information-confirmation step. The service category is Tools / Office. Final runtime asset publication, updated package upload, actual host verification and final review submission must be recorded separately; parsing success is not marketplace approval.
+
 ## Listing information
 
 | Field | Proposed value |

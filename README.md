@@ -46,6 +46,10 @@ Only one Office service may own a workspace at a time. The plugin manifest also 
 
 The plugin exposes one user-facing Skill, `univer-office`, and one MCP service. Product and cross-Unit guidance lives in seven ordinary Markdown files under `skills/univer-office/references/`, loaded only as needed. A standalone Skill ZIP is available through `python3 scripts/package-workbuddy-skills.py`; it contains instructions, not the Office runtime.
 
+The official marketplace candidate uses **MCP + Skill**, with a local stdio process. `bin/univer-office.mjs` provides the npx executable and requires an explicit absolute `WORKBUDDY_OFFICE_WORKSPACE`. The connector's setup form supplies this local directory; it requires no cloud account or Office API key. The published-runtime builder includes a production npm shrinkwrap lock. This is separate from the earlier expert ZIP, which requires manually starting an HTTP service.
+
+Build the candidate after building the runtime targets: `node scripts/package-connector-runtime.mjs`, then `python3 scripts/package-workbuddy-connector.py`. The ZIP contains the connector metadata, MCP configuration, directory form, logo and one Skill; the runtime is downloaded as a fixed GitHub release asset. First-time installation may take several minutes. Platform parsing, protocol-level previews and actual WorkBuddy panel behavior are separate acceptance checks; see [submission status](docs/marketplace-submission.md).
+
 If you previously imported the eight separate development Skills, updating the plugin does not automatically remove those independent user installations. After installing the unified Skill, remove only the old Univer Skills through WorkBuddy's installed-Skills manager; do not remove the Office connector or user Office files.
 
 ## Checks and local packaging
